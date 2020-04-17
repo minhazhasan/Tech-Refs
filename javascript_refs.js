@@ -32,8 +32,21 @@ to include escaping characters, or provide inline formatting we use backtick ope
 Backtick-quoted strings, usually called template literals.
 
 let s = "coconuts";
-console.log(s.slice(2, 4)); // co
 
+console.log(s.slice(2, 4)); // co
+console.log(s.indexOf("u")); // 5, returns the first occurence of the character.
+console.log("   hello, world!  ".trim()); // 'hello, world', remove whitespaces from start and end of the string.
+console.log(String(6).padStart(3, "0")); // 006
+
+let sentence = "Secretary birds specialize in stomping";
+let words = sentence.split(" ");
+
+console.log(words); // ['Secretary', 'birds', 'specialize', 'in', 'stomping']
+console.log(words.join(" ")); // 'Secretary birds specialize in stomping'
+console.log("AA".repeat(3)); // 'aaaaaa'
+
+console.log(s.length); // 8
+console.log(s[1]); // 'o'
 
 --------Unary operators--------
 
@@ -207,7 +220,37 @@ function power(base, exponent){
 }
 console.log(power(2, 3)); // 8
 
---------Data Structures: Objects and Arrays(Mutable)----------
+// Rest parameters
+// ...numbers -> rest parameter
+function max(...numbers){
+	let result = -Infinity;
+	for(let number of numbers)
+		result = (result < number) ? number : result;
+
+	return result;
+} 
+
+console.log(max(1, 4, 11, -12, 2, 3)); // 11
+
+let numbers = [5,1,7];
+console.log(max(...numbers));
+
+// deep equal function
+const deepEqual = (objA, objB) => {
+	let objAKeys = Object.keys(objA);
+	let objBKeys = Object.keys(objB);
+
+	if(objAKeys.length != objBKeys.length)  return false;
+
+	for(let i = 0; i < objAKeys.length; i++){
+		if(objAKeys[i] != objBKeys[i]) return false;
+		if(objA[objAKeys[i]] != objB[objBKeys[i]]) return false;
+	}
+
+	return true;
+};
+
+--------Arrays(Mutable)----------
  // Arrays
 
  let lisOfNumbers = [2,3,5,6,7,5];
@@ -219,6 +262,9 @@ console.log(power(2, 3)); // 8
  lisOfNumbers.unshift(12); // add element to first, [12,3,5,6,7]
  lisOfNumbers.indexOf(3); // 1
  lisOfNumbers.lastIndexOf(5); // 5
+ lisOfNumbers.splice(lisOfNumbers.indexOf(3), 1); // [2,5,6,7,5];
+ lisOfNumbers.sort((a, b) => a - b); // [2,5,5,6,7]
+ lisOfNumbers.sort((a, b) => b - a); // [7,6,5,5,2]
 
  *** both indexOf and lastIndexOf take optional second argument 
      that indicates where to start where to start searching. ***
@@ -231,8 +277,28 @@ console.log(power(2, 3)); // 8
  }
 
  console.log(remove(lisOfNumbers, 2)) // [2,3,6,7,5]
- 
- // Objects
+
+ lisOfNumbers.forEach(l => console.log(l + 1)); // 3 4 7 8 6
+ console.log(lisOfNumbers.filter(s => s % 2 == 0)); // [2, 6]
+ console.log(lisOfNumbers.map(s => s * 2)); // [4,6,12,14,10]
+ console.log(lisOfNumbers.reduce((a, b) => a + b)); // 23
+
+ function reduce(array, combine, start){
+ 	let current = start;
+ 	for(let element of array)
+ 		current = combine(current, element);
+
+ 	return current;
+ } 
+
+ console.log(reduce(lisOfNumbers, (a, b) => a + b, 0)); // 23
+
+ // flatten an array
+ let arrays = [[1,2,3], [4,5], [6]];
+ let flatArray = arrays.reduce((flat, current) => flat.concat(current), []);
+
+ console.log(flatArray); // [1,2,3,4,5,6]
+ --------------Objects(Mutable)----------------------
 
  let day1 = {
  	squirrel: false,
@@ -255,4 +321,33 @@ console.log(objectA); // {a:1, b:3, c:4}
 
 console.log(typeof []); // 'object'
 
+// Destructuring
+let {name} = {name: "Faraji", age: 23};
+console.log(name) // 'Faraji'
+
+let [a, b] = [2, 5];
+console.log(a); // 2
+
+function anyFunc([a0, b0, c0]){
+	return a0 + b0 + c0;
+}
+
+console.log(anyFunc([5, 3, 12])); // 
 *** Javascript objects are mutable ***
+
+-----------Math Object-------------
+ // random number between 0(inclusive) and 1(exclusive)
+ let randomNum = Math.floor(Math.random() * 10) // 5
+ let roundNum = Math.round(3.5) // 4
+ let ceilNum = Math.ceil(4.2) // 5
+
+
+ ----------JSON Object--------------------
+
+ // JSON = Javascript object notation
+ // similar to Javascript object and arrays.
+ // all property names have to be surrounded by double quotes.
+
+ let string = JSON.stringify({sq: false, eve:["we", "the"]});
+ console.log(string); // {"sq":false, "eve":["we", "the"]}
+ console.log(JSON.parse(string).eve); // [ "we", "the" ]
