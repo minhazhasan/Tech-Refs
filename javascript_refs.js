@@ -507,3 +507,27 @@ console.log(anyFunc([5, 3, 12])); //
   mySet.add(1); // mySet = [1]
   mySet.add(5); // mySet = [1, 5]
   mySet.add(5); // mySet = [1, 5]
+
+  mySet.has(5) // true
+  mySet.size // 2
+
+  mySet.delete(5) // deletes 5
+
+  for(let item of mySet)
+  	console.log(item);
+  // 1
+  // 5
+
+  -------------Symbol------------------
+
+  // possible for multiple instances to use the same property name for different things.
+  // newly created symbols are unique.
+  // Symbol is a primitive data type.
+
+  const toStringSymbol = Symbol("toString");
+  Array.prototype[toStringSymbol] = function(){
+  	return `${this.length} cm of blue yarn`;
+  };
+
+  console.log([1,2].toString()); // 1, 2
+  console.log([1,2][toStringSymbol]()); // 2 cm of blue yarn
