@@ -1,5 +1,7 @@
 // Javascript reference
-// Book - Eloquent Javascript (Marjin Haverbeke)
+/* References - Eloquent Javascript (Marjin Haverbeke)
+				Mozilla Javascript MDN library
+*/
 
 // Javascript Types, Operators
 
@@ -187,6 +189,29 @@ const power = (base, exp) => {
 	return result;
 };
 
+*** An arrow function does not have its own this.
+*** An arrow function expression are best suited for non-method function.
+
+// returning object literals
+let func = () => ({val : 1, type: 'int'});
+console.log(func()); //  { val: 1 , type: "int"}
+
+// 'this' in function
+function Person() {
+  // The Person() constructor defines `this` as an instance of itself.
+  this.age = 0;
+
+  setInterval(function growUp() {
+    // In non-strict mode, the growUp() function defines `this`
+    // as the global object (because it's where growUp() is executed.), 
+    // which is different from the `this`
+    // defined by the Person() constructor.
+    this.age++;
+  }, 1000);
+}
+
+var p = new Person();
+
 // optional arguments
 function power(base, exp = 2){
 	let result = 1;
@@ -295,7 +320,7 @@ const deepEqual = (objA, objB) => {
 
  // flatten an array
  let arrays = [[1,2,3], [4,5], [6]];
- let flatArray = arrays.reduce((flat, current) => flat.concat(current), []);
+ let flatArray = arrays.reduce((flat, current) => flat.concat(current), []); // not for deep flattening
 
  console.log(flatArray); // [1,2,3,4,5,6]
  --------------Objects(Mutable)----------------------
@@ -351,3 +376,76 @@ console.log(anyFunc([5, 3, 12])); //
  let string = JSON.stringify({sq: false, eve:["we", "the"]});
  console.log(string); // {"sq":false, "eve":["we", "the"]}
  console.log(JSON.parse(string).eve); // [ "we", "the" ]
+
+ ----------OOP JS-------------------------
+
+ ***Encapsulation
+ 	  - divide program into small pieces and encapsulate within a container like classes, functions, variables, closures, etc.
+ 	  - make each peice for responsible for it's own state;
+ 	  - separating interface from implementation usually called encapsulation.
+
+ // Methods
+ let rabbit = {};
+ rabbit.speak = function(line){
+ 	console.log(`The rabbit says '${line}'`);
+ } 
+
+ rabbit.speak("I'm alive!!");
+
+ // accessing instance
+ rabbit.speak = function(line){
+ 	console.log(`The ${this.type} rabbit says '${line}'`);
+ };
+
+ let whiteRabbit = {type: "white", speak};
+ let hungryRabbit = {type: "hungry", speak};
+
+ console.log(whiteRabbit.speak("I'm white")); // The white rabbit says 'I'm white
+ console.log(hungryRabbit.speak("I'm hungry")); // The hungry rabbit says 'I'm hungry
+
+ // explicit call to 'this', only works for functions
+ speak.call(hungryRabbit, 'Burp!'); // The hungry rabbit says 'Burp'
+
+ ***Prototype (Classes in JS)
+     - prototype is another object used as a fallback source of properties.
+     - if a property not defined in the current object, JS searches the property in it's prototype,
+     - then it's ancestrals prototype
+
+  console.log(Object.getPrototypeOf(Math.max) == Function.prototype); // true
+  console.log(Object.getPrototypeOf([]) == Array.prototype); // true
+  
+  // classic JS constructor for classes
+  // each fuction has its own this binding
+  function Rabbit(type){
+  	this.type = type;
+  }
+
+  Rabbit.prototype.speak = function(line) => {
+  	console.log(`The ${this.type} rabbit says '${line}'`);
+  };
+
+  let weirdRabbit = new Rabbit("weird");
+  weirdRabbit.speak("I'm weird"); // The weird rabbit says 'I'm weird
+
+  // Overriding
+  weirdRabbit.speak = () => {
+  	console.log("I'm weird rabbit"); 
+  }
+
+  weirdRabbit.speak(); // I'm weird rabbit
+
+  // JS 2015, ES6 Classes
+
+  class Rabbit{
+  	constructor(type){
+  		this.type = type;
+  	}
+
+  	speak(line){
+  		console.log(`The ${this.type} rabbit says '${line}'`);	
+  	}
+  }
+
+  let killerRabbit = new Rabbit("killer");
+  let blackRabbit = new Rabbit("black");
+
