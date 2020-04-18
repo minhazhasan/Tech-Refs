@@ -52,8 +52,6 @@ console.log(s[1]); // 'o'
 
 --------Unary operators--------
 
-this means it can take only one operand.
-
 e.g, console.log(typeof 4.5) // number
 	 console.log(typeof "x") // string
 
@@ -449,3 +447,63 @@ console.log(anyFunc([5, 3, 12])); //
   let killerRabbit = new Rabbit("killer");
   let blackRabbit = new Rabbit("black");
 
+  ----------------Maps--------------------
+  ***Map object holds key-value pairs and remembers the original insertion order of the keys.***
+  ***Object keys are not ordered and Maps don't have default deys.***
+
+  let myMap = new Map();
+  let keyString = 'a string';
+  let keyObj    = {};
+  let keyFunc   = function() {};
+
+  // setting the values
+  myMap.set(keyString, "value associated with 'a string'");
+  myMap.set(keyObj, 'value associated with keyObj');
+  myMap.set(keyFunc, 'value associated with keyFunc');
+
+  myMap.size;              // 3
+
+  // getting the values
+  myMap.get(keyString);    // "value associated with 'a string'"
+  myMap.get(keyObj);       // "value associated with keyObj"
+  myMap.get(keyFunc);      // "value associated with keyFunc"
+
+  myMap.get('a string');    // "value associated with 'a string'"
+                         // because keyString === 'a string'
+  myMap.get({});            // undefined, because keyObj !== {}
+  myMap.get(function() {}); // undefined, because keyFunc !== function () {}
+
+  myMap.clear(); // remove all key-value pairs
+  myMap.set(0, 'zero');
+  myMap.set(1, 'one');
+
+  for(let [key, val] of myMap){
+  	console.log(key + '=' + val); 
+  }
+  // 0 = zero 
+  // 1 = one
+
+  for (let key of myMap.keys()) {
+    console.log(key)
+  }
+  // 0
+  // 1
+
+  for (let value of myMap.values()) {
+    console.log(value)
+  }
+  // zero
+  // one
+
+  for (let [key, value] of myMap.entries()) {
+    console.log(key + ' = ' + value)
+  }
+  // 0 = zero
+  // 1 = one
+
+  --------------Set---------------------
+  // collection of unique values
+  let mySet = new Set();
+  mySet.add(1); // mySet = [1]
+  mySet.add(5); // mySet = [1, 5]
+  mySet.add(5); // mySet = [1, 5]
