@@ -531,3 +531,38 @@ console.log(anyFunc([5, 3, 12])); //
 
   console.log([1,2].toString()); // 1, 2
   console.log([1,2][toStringSymbol]()); // 2 cm of blue yarn
+
+  -------------Regular Expression-----
+
+  let re1 = new RegExp("abc");
+  let re2 = /abc/;
+  let re3 = /[0-9]/;
+  console.log(re1.test("abcde")); // true
+  console.log(re2.test("abnd")); // true
+  console.log(re3.test("in 1992")); // true
+
+
+  -------------Async Javascript-------
+
+  // Synchronous Execution
+
+  const btn = document.querySelector('button');
+  btn.addEventListener('click', () => {
+  	alert('Clicked!');
+
+  	let pElem = document.createElement('p');
+  	pElem.textContent = 'This is a newly created paragraph.';
+  	document.body.appendChild(pElem);
+  });
+
+  // Asynchonicity in JS
+
+  // Async operation like promises are put into an event queue, which runs after the main thread - 
+  // has finished processing so that they do not block subsequent code form running.
+  
+  // When promise created, it is neither in a success state or failure state. It is said to be pending.
+  // When promise returns, it is said to be resolved.
+  // successfull promise accessed by .then()
+  // unsuccessfull promise is said to be rejected and accessed by .catch()
+
+  
