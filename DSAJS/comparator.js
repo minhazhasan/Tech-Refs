@@ -1,6 +1,6 @@
 // ref: github.com/trekhleb/javascript-algorithms
 
-export default class Comparator {
+export class Comparator {
   constructor(compareFunction) {
     this.compare = compareFunction || Comparator.defaultCompareFuction;
   }

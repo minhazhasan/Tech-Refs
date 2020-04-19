@@ -1,4 +1,5 @@
 import { LinkedListNode } from "./LinkedListNode.js";
+import { Comparator } from "./comparator.js";
 
 export class LinkedList {
   constructor() {
@@ -36,9 +37,75 @@ export class LinkedList {
       this.tail = null;
     }
 
-    const val = removedNode.val;
-    removedNode = null;
+    return removedNode;
+  }
 
-    return val;
+  addLast(val) {
+    const newNode = new LinkedListNode(val);
+
+    if (!this.tail && !this.head) {
+      this.tail = newNode;
+      this.head = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    return this.tail;
+  }
+
+  removeLast() {
+    if (!this.tail) return null;
+    let currentNode = this.head;
+    let prevNode = null;
+
+    while (currentNode.next) {
+      prevNode = currentNode;
+      currentNode = currentNode.next;
+    }
+
+    this.tail = prevNode;
+    prevNode.next = null;
+  }
+
+  remove(val) {
+    if (!this.head) return null;
+
+    if (this.tail.value == val) {
+      this.removeLast();
+      return this;
+    }
+
+    if (this.head.value == val) {
+      this.removeFront();
+      return this;
+    }
+
+    let currentNode = this.head;
+    let prevNode = null;
+
+    while (currentNode) {
+      if (currentNode.value == val) {
+        let deletedNode = currentNode;
+        prevNode.next = currentNode.next;
+        currentNode = prevNode;
+        return deletedNode;
+      }
+
+      prevNode = currentNode;
+      currentNode = currentNode.next;
+    }
+  }
+
+  find(val) {
+    if (!this.head) return null;
+
+    let currNode = this.head;
+    while (currNode) {
+      if (val !== undefined && currNode.value === val) return currNode;
+
+      currNode = currNode.next;
+    }
+
+    return "Not Found";
   }
 }
