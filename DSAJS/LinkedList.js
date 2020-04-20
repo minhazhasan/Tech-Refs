@@ -108,4 +108,8 @@ export class LinkedList {
 
     return "Not Found";
   }
+
+  reverse() {}
+  findMidElement() {}
+  recReverse() {}
 }
