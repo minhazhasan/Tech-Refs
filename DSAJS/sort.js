@@ -6,7 +6,7 @@
  * returns no. of inversions
  */
 
-export let countInv = function(nums) {
+export let countInv = function (nums) {
   // array length = 1 means it's already sorted, # of inversion = 0
   if (nums.length == 1) return 0;
 
@@ -37,7 +37,8 @@ export let countInv = function(nums) {
  * @param {integer[]} leftSubArray sorted
  * @param {integer[]} rightSubArray sorted
  */
-let mergeCount = function(nums, leftSubArray, rightSubArray) {
+
+let mergeCount = function (nums, leftSubArray, rightSubArray) {
   let countInv = 0; // # of inversions
   let leftSubArrayLength = leftSubArray.length;
   let rightSubArrayLength = rightSubArray.length;
@@ -51,7 +52,7 @@ let mergeCount = function(nums, leftSubArray, rightSubArray) {
       merged.push(leftSubArray[left++]);
       //left++;
     } else {
-      // count inversion = total number of remainning element from left position.
+      // count inversion = total number of remainning elements from the left position.
       // why? because both left is already sorted. So, all the elements including left is greater than,
       // right indexed element of the right sub array.
       // i.e, count inversions = total # of left elements - left pointer position.

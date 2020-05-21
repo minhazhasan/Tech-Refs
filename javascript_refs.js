@@ -447,6 +447,7 @@ console.log(anyFunc([5, 3, 12])); //
   let killerRabbit = new Rabbit("killer");
   let blackRabbit = new Rabbit("black");
 
+  
   ----------------Maps--------------------
   ***Map object holds key-value pairs and remembers the original insertion order of the keys.***
   ***Object keys are not ordered and Maps don't have default deys.***

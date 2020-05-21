@@ -30,6 +30,31 @@
 //Access Environment variable
 process.env.NODE_ENV
 
+// global object
+// In nodejs global scope available via global object, rather than window object in browsers
+global.setTimeout();
+global.setInterval();
+
+// creating a module
+let msg = "Test";
+function sendMsg(msg){
+	console.log(msg);
+}
+module.exports.sendMsg = sendMsg;
+
+// loading a module
+// require returns exported objects from a module
+const sendMsg = require('Location_of_your_jsFile');
+
+/**
+ * Node does not execute the code immediately, instead it wraps the code
+ * inside an immediate invocable function.
+ */
+
+(function (exports, require, module, __filename, __dirname){
+	// Your code here
+})
+
 //Accessing command line arguments
 const args = process.argv.slice(2)
 
