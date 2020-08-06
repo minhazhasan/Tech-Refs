@@ -1,0 +1,54 @@
+-----DevOps Notes-----
+
+Why should we care?
+----- Faster deployments
+----- Fewer service disruption
+----- Faster recovery
+
+3 ways - Principles of devops
+
+1. System Thinking
+
+----- Produce production grade application faster.
+----- Never passing a known defect to downstream work centers.
+----- Never allowing local optimization to create golbal degradation.
+----- Always seeking to increase flow.
+------------ Continuous Integration
+------------ Continuous Deployment
+
+2. Feedback Loops
+
+----- Measure throughput of work through the system.
+----- Page load times
+----- Am I building the right thing (A/B testing)
+----- Metrics (How many requests a server can process, unit tests, KPI)
+----- Postmortems/learning reviews (MTTR(Mean time to recover))
+----- Understanding and responding to all customers, internal and extenal
+----- Shortening and amplifying all feedback loops
+----- Embedding Knowledge where we need it
+
+3. Culture Experimentation
+
+----- Continual Experimentation.
+----- Allocating time for the improvement of daily work.
+----- Creating rituals that reward the team for taking risks.
+----- Introducing faluts into the system to increase resilience.
+-------- To build resilience and reliability
+
+CAMS - Culture, Automation, Measurement, Sharing
+
+CAMS - Culture
+
+------ Came from @damonedwards and @botchagalupe
+------ Culture eats strategy for breakfast
+------ Service ownership
+------ Hack events
+------ Technical debt grooming
+------ Game days
+------ Destructive testing
+------ Cross functional teams
+------ Agile
+
+*** Cons - Cargo Culting
+	---- Why we are adapting the culture, we need have goo understanding about that.
+

@@ -1,0 +1,6 @@
+Installation on linux: Ref: (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+import mongoDB to apt package: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+if error happens, try the following instruction
+1. Install gnupg and its required libraries using the following command: sudo apt-get install gnupg
+2. Once installed, retry importing the key: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -

@@ -58,31 +58,31 @@ ReactDOM.render(<MyComponent />, document.getElementById("root"));
 // component code into a React.CreateElement(type: String,....) which create an element. So, when it
 // encounters multiple elements from a component it doesn't know which one to render. For example,
 
-class Counter extends Components{
-  render(){
+class Counter extends Components {
+  render() {
     // it is showing JSX expressions must have one parent element
-    return <h1>Hello, Component!!!</h1><button>Increment</button>;
+    return <h1>Hello, Component!!!</h1><button>Increment</button>
   }
 }
 
 // Solution
-class Counter extends Components{
-  render(){
+class Counter extends Components {
+  render() {
     // we wrap the elements inside a div or
     // we can React.Fragment
     // Why closing parenthesis? because of JS auto semicolon insertion
     // JS will ignore anything after return statement.
     return (
       <div><h1>Hello, Component!!!</h1>
-      <button>Increment</button></div>
+        <button>Increment</button></div>
     );
   }
 }
 
 // or
 
-class Counter extends Components{
-  render(){
+class Counter extends Components {
+  render() {
     // we wrap the elements inside a div or
     // we can use React.Fragment. Advantage!! 
     // because above code will insert the redundant div element in the html
@@ -94,21 +94,21 @@ class Counter extends Components{
     );
   }
 }
- 
+
 
 // ---------Embedding Expressions-----------
 
 // to send data to component, we use state property
-class Counter extends Component{
+class Counter extends Component {
   state = {
     count: 0
   };
 
   // embedding expression using {}
-  render(){
+  render() {
     return (
       <div>
-        <span>{2+2}</span>
+        <span>{2 + 2}</span>
         <button>Increment</button>
       </div>
     );
@@ -119,7 +119,7 @@ class Counter extends Component{
 
 // Setting Attribute, use camelCase naming for CSS attributes
 
-class Counter extends Component{
+class Counter extends Component {
   state = {
     count: 0
   };
@@ -130,7 +130,7 @@ class Counter extends Component{
   };
 
   // embedding expression using {}
-  render(){
+  render() {
     return (
       <div>
         {/**
@@ -194,10 +194,10 @@ export class Counter extends Component {
     tags: ["tags1", "tags2", "tags3"]
   };
 
-  renderTags(){
-    if(this.state.tags.length === 0) return <p>There are no tags!</p>;
+  renderTags() {
+    if (this.state.tags.length === 0) return <p>There are no tags!</p>;
 
-    return <ul>{this.state.tags.map(tag => <li key={tag}>{tag}</li>)}</ul> 
+    return <ul>{this.state.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
   }
 
   render() {
@@ -220,7 +220,7 @@ export class Counter extends Component {
   obj = {
     name: "I'm from different obj"
   }
-  constructor(){
+  constructor() {
     this.handleIncrement = this.handleIncrement.bind(this);
   }
 
@@ -269,7 +269,7 @@ export class Counter extends Component {
   obj = {
     name: "I'm from different obj"
   }
-  constructor(){
+  constructor() {
     this.handleIncrement = this.handleIncrement.bind(this);
   }
 
@@ -358,3 +358,49 @@ export default class Counter extends Component {
 
 
 // passing children -> this.props.children (elements between childrens e.g, <Counter><h4></h4></Counter>, h4 is the child element)
+/**
+ * props vs state
+ * props - input to a component (read-only)
+ * ----- common uses include passing data to child components
+ * state - internal state of a component
+ */
+
+// Raising and Handling Events
+class Counters extends Component {
+  state = {
+    counters: []
+  }
+
+  handleDelete = () => {
+    console.log("Handle Delete");
+  };
+
+  render() {
+    return (
+      <div>
+        {this.state.counters.map(counter => (
+          <Counter key={counter.id} value={counter.value} id={counter.id} onDelete={this.handleDelete} />
+        ))}
+      </div>
+    );
+  }
+}
+
+// now raise the onDelete event on Counter Component
+
+// Single Source of truth
+// to sync multiple components reflect on the same data, we need a single source of truth
+// i.e. we need a common ancestrial component which holds the state of the data.
+// Controlled Component: doesn't have local state, it controlled by it's parent.
+
+/**
+ * Lifecycle Hooks
+ *  1. Mount: constructor -> render -> componentDidMount
+ *  2. Update: render -> componentDidUpdate
+ *  3. Unmount: componentWillUnmount
+ *
+ * ---constructor()
+ *    Typically, in React constructors are only used for two purposes:
+ *      1. Initializing local state by assigning an object to this.state
+ *      2. Bindind event handler methods to an instance
+ */
