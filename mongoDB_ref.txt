@@ -1,6 +1,365 @@
-Installation on linux: Ref: (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
-import mongoDB to apt package: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+// Ref: MongoDB in action 3.0 by kyle Banker, Peter Bakkum
 
-if error happens, try the following instruction
-1. Install gnupg and its required libraries using the following command: sudo apt-get install gnupg
-2. Once installed, retry importing the key: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+// Installation on linux: Ref: (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+// import mongoDB to apt package: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+// if error happens, try the following instruction
+// 1. Install gnupg and its required libraries using the following command: sudo apt-get install gnupg
+// 2. Once installed, retry importing the key: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+// MongoDB's data model is document-oriented.
+// Sample JSON document representing an article on a social news site
+{
+    _id: ObjectID('4bd9e8e17cefd644108961bb'),
+    title: 'Adventures in Databases',
+    url: 'http://example.com/databases.txt',
+    author: 'msmith',
+    vote_count: 20,
+    tags: ['databases', 'mongodb', 'indexing'],
+    image: {
+        url: 'http://example.com/db.jpg',
+        caption: 'A database.',
+        type: 'jpg',
+        size: 75381,
+        data: 'Binary'
+    },
+     comments: [
+        {
+            user: 'bjones',
+            text: 'Interesting article.'
+        },
+        {
+            user: 'sverch',
+            text: 'Color me skeptical!'
+        }   
+    ]
+}
+
+// ****SQL-------------------------MongoDB
+// Database                        Database
+// Table                           Collection
+// Index                           Index
+// Row                             Document
+// Column                          Field
+// Joins                           Embed in document or link via DBRef
+
+// sql to mongoDB  http:/​/​s3.​amazonaws.​com/​infomongodb-​com/​sql_​to_​mongo.​pdf.
+// MongoDB groups documents into collections, containers that don't impose any sort of schema.
+// MongoDB allows up to 64 indexes per collection.
+
+// Vertical Scaling or Scaling Up:  The technique of augmenting a single node's hardware.
+// Horizontal Scaling or Scaling Out: distributing the database across multiple machines.
+// Sharding: range-based partitioning mechanism
+
+// Start MongoDB server if not started. On Linux: sudo systemctl start mongod
+// Starting the shell: mongo
+
+// To create collections under a database, use the following command: use your_database_name
+// Databases and collections are created only when documents are first inserted.
+
+// explicity create a collection
+// > use tutorial
+// > db.createCollection("users")
+
+// renaming a collection
+// > db.users.renameCollection("users_stories")
+
+// MongoDB connection string: mongodb://localhost/ (for local development)
+
+// Insert a document
+// > db.users.insert({username: "smith"})
+
+// _id field is the primary key of a document.
+
+// query the # of documents inside a collection.
+// > db.users.count()
+
+// query the documents: > db.users.find()
+
+// query selector to the find method - Case Sensitive
+// > db.users.find({username: "jones"})
+
+// predicate $and: returns the documents matches every fields.
+// > db.users.find({ $and: [
+// { _id: ObjectId("552e458158cd52bcb257c324") },
+// { username: "smith" }
+// ]})
+
+// predicate $or: returns the documents matches either fields.
+// db.users.find({ $or:[
+//     {username: "smith"},
+//     {username: "jones"}
+// ]})
+
+// update record
+// > db.users.update({username: "Smith"}, {$set: {country: "Canada"}})
+
+// Replacement update - Careful, it will replace the record with the 2nd argument
+// > db.users.update({username: "Smith"}, {gender: "Male"})
+// ** Result: { "_id" : ObjectId("5f2c6d7c2f03016698810915"), "gender" : "Male" }
+//            { "_id" : ObjectId("5f2c6ec92f03016698810916"), "username" : "jones" }
+
+// $unset operator: to remove any unwanted fields
+// > db.users.update({username: "Smith"}, {$unset: {gender: 1}})
+
+// Complex Updates
+// > db.users.update({username: "Smith"}, 
+// {
+//     $set:{
+//         favorites: {
+//             cities: ["Chicago", "Cheyenne"],
+//             movies: ["Casablanca", "For a Few Dollars More", "The Sting"]
+//         }
+//     }
+// })
+
+// format shell results: > db.users.find().pretty()
+
+// The find() command returns a cursor and to access the documents, we need to iterate the cursor.
+// The find() command automatically returns 20 documents if available.
+
+// To search complex documents(key within a key)
+// > db.users.find({"favorites.movies": "Casablanca"})
+
+// To add an element to the inner list, we need to use either $push or $addToSet operator. 
+// $set operator rewrites the entire update operation.
+// db.users.update({"favorites.movies": "Casablanca"},
+// {
+//     $addToSet: {"favorites.movies": "The Maltese Falcon"}
+// }, false, true)
+// *** 3rd argument(false): indicates whether to insert the record as a new document if it doesn't exist.
+// *** 4th argument(true): indicates that thiss is multi-update. By default, a MongoDB update operation will apply only to the 
+// ****** first document matched by query selector.
+
+
+// Deleting Data
+
+// Removing entire collection's documents
+// db.users.remove()
+
+// To remove a certain subset of a collection's documents, we need to pass a query selector to remove() method.
+// > db.users.remove({"favorites.cities": "Cheyenne"})
+
+// If your intent is to delete the collection along with all of its indexes, use the drop() method:
+// > db.users.drop()
+
+// To delete a database
+// use tutorial
+// db.dropDatabase()
+
+// To discover more commands
+// > help
+// > db.help() // help on db methods
+
+// For the full list of keyboard shortcuts, please visit http://docs.mongodb.org/v3.0/reference/program/mongo/#mongo-keyboard-shortcuts.
+
+// creating a large collection
+// for(i = 0; i < 20000; i++){
+//     db.numbers.save({num: i})
+// }
+
+// Range queries
+// > db.numbers.find({num: {"$gt": 20, "$lt": 25}}) // exclusive
+// > db.numbers.find({num: {"$gte": 20, "$lte": 25}}) // inlusive
+
+// To diagnose queries and slow operations
+// > db.numbers.find({num: {"gt": 19995}}).explain("executionStats")
+
+// Creting index
+// > db.numbers.createIndex({num: 1}) // index built on num key
+
+// Verify Index
+// > db.numbers.getIndexes()
+
+// Adminitration
+// Getting database information: > show dbs
+// List of collections of a database: > show collections
+// Show insight about a database: > db.stats()
+// Show insight about a collection: > db.numbers.stats()
+
+
+// Databases: A database is a namespace and physical grouping of collections and their indexes.
+// mongod.lock: stores the server's process ID (never delete or alter the lock file unless you're recovering from an unclean shutdown)
+
+// .ns stands for namespace. The metadata for each collection and index in a database gets its own namespace file, which is organized as a hash table.
+// By default, the .ns file file is fixed to 16 MB, which lets it store apporximately 26,000 entries, i.e, the sum of the number of indexes and collections
+// in your database can't exceed 26,000. If more space needed, we can make file larger by the --nssize option when starting mongod.
+
+// Technically, colelctions are allocated space inside each data file in chunks called extents. The storageSize is the total space allocated for collection extents.
+
+// Creating a capped collection
+// > db.createCollection("users.actions", {capped: true, size: 16384, max: 100})
+
+// TTL(time to live) collections
+// db.reviews.createIndex({time_filed: 1}, {expireAfterSeconds: 3600})
+
+
+// Example of e-commerce data model
+// Sample product document
+{
+    _id: ObjectId("4c4b1476238d3b4dd5003981"),
+    slug: "wheelbarrow-9092",
+    sku: "9092",
+    name: "Extra Large Wheelbarrow",
+    description: "Heavy duty wheelbarrow...",
+    details: {
+        weight: 47,
+        weight_units: "lbs",
+        model_num: 4039283402,
+        manufacturer: "Acme",
+        color: "Green"
+    },
+    total_reviews: 4,
+    average_review: 4.5,
+    pricing: {
+        retail: 589700,
+        sale: 489700,
+    },
+    price_history: [
+        {
+        retail: 529700,
+        sale: 429700,
+        start: new Date(2010, 4, 1),
+        end: new Date(2010, 4, 8)
+        },
+        {
+        retail: 529700,
+        sale: 529700,
+        start: new Date(2010, 4, 9),
+        end: new Date(2010, 4, 16)
+        },
+    ],
+    primary_category: ObjectId("6a5b1476238d3b4dd5000048"),
+    category_ids: [
+        ObjectId("6a5b1476238d3b4dd5000048"),
+        ObjectId("6a5b1476238d3b4dd5000049")
+    ],
+    main_cat_id: ObjectId("6a5b1476238d3b4dd5000048"),
+    tags: ["tools", "gardening", "soil"],
+}
+
+// Sample category document
+{
+    _id: ObjectId("6a5b1476238d3b4dd5000048"),
+    slug: "gardening-tools",
+    name: "Gardening Tools",
+    description: "Gardening gadgets galore!",
+    parent_id: ObjectId("55804822812cb336b78728f9"),
+    ancestors: [
+        {
+        name: "Home",
+        _id: ObjectId("558048f0812cb336b78728fa"),
+        slug: "home"
+        },
+        {
+            name: "Outdoors",
+            _id: ObjectId("55804822812cb336b78728f9"),
+            slug: "outdoors"
+        }
+    ]
+}
+
+// Sample Order document
+{
+    _id: ObjectId("6a5b1476238d3b4dd5000048"),
+    user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+    state: "CART",
+    line_items: [
+        {
+            _id: ObjectId("4c4b1476238d3b4dd5003981"),
+            sku: "9092",
+            name: "Extra Large Wheelbarrow",
+            quantity: 1,
+            pricing: {
+                retail: 5897,
+                sale: 4897,
+            }
+        },
+        {
+            _id: ObjectId("4c4b1476238d3b4dd5003982"),
+            sku: "10027",
+            name: "Rubberized Work Glove, Black",
+            quantity: 2,
+            pricing: {
+                retail: 1499,
+                sale: 1299
+            }
+        }
+    ],
+    shipping_address: {
+        street: "588 5th Street",
+        city: "Brooklyn",
+        state: "NY",
+        zip: 11215
+    },
+    sub_total: 6196
+}
+
+// Sample User document
+{
+    _id: ObjectId("6a5b1476238d3b4dd5000048"),
+    user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+    state: "CART",
+    line_items: [
+        {
+            _id: ObjectId("4c4b1476238d3b4dd5003981"),
+            sku: "9092",
+            name: "Extra Large Wheelbarrow",
+            quantity: 1,
+            pricing: {
+                retail: 5897,
+                sale: 4897,
+            }
+        },
+        {
+            _id: ObjectId("4c4b1476238d3b4dd5003982"),
+            sku: "10027",
+            name: "Rubberized Work Glove, Black",
+            quantity: 2,
+            pricing: {
+                retail: 1499,
+                sale: 1299
+            }
+        }
+    ],
+    shipping_address: {
+        street: "588 5th Street",
+        city: "Brooklyn",
+        state: "NY",
+        zip: 11215
+    },
+    sub_total: 6196
+}
+
+// A Product Review Sample document
+{
+    _id: ObjectId("4c4b1476238d3b4dd5000041"),
+    product_id: ObjectId("4c4b1476238d3b4dd5003981"),
+    date: new Date(2010, 5, 7),
+    title: "Amazing",
+    text: "Has a squeaky wheel, but still a darn good wheelbarrow.",
+    rating: 4,
+    user_id: ObjectId("4c4b1476238d3b4dd5000042"),
+    username: "dgreenthumb",
+    helpful_votes: 3,
+    voter_ids: [
+        ObjectId("4c4b1476238d3b4dd5000033"),
+        ObjectId("7a4f0376238d3b4dd5000003"),
+        ObjectId("92c21476238d3b4dd5000032")
+    ]
+}
+
+// MongoDB queries
+
+// Find the product with the unique slug
+product = db.products.findOne({'slug': 'wheel-barrow-9092'})
+
+// Category information of that product
+db.categories.findOne({'id': product['main_cat_id']})
+
+// fetch reviews of that product
+db.reviews.find({'product_id': product['_id']})
+
+// **find -> returns a cursor and multiple documents
+// **findOne -> returns a single and first matched document
