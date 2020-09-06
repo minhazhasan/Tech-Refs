@@ -363,3 +363,26 @@ db.reviews.find({'product_id': product['_id']})
 
 // **find -> returns a cursor and multiple documents
 // **findOne -> returns a single and first matched document
+
+// paginate the review document
+db.reviews.find({'product_id': product['_id']}).skip(0).limit(12)
+
+// Query: return 12 reviews sorted by the total number of helpful votes in descending order
+db.reviews.find({'product_id': product['_id']}).sort({'helpful_votes': -1}).limit(12)
+
+// pagination
+page_number = get_page_number
+product = db.products.findOne({'slug': 'wheel-barrow-9092'})
+category = db.categories.findOne({'_id': product['main_cat_id']})
+reviews_count = db.reviews.count({'product_id': product['_id']})
+reviews = db.reviews.find({'product_id': product['_id']})
+                    .skip((page_number - 1) * 12)
+                    .limit(12)
+                    .sort({'helpful_votes': -1})
+
+
+// query using regular expressions
+db.users.find({'last_name': /^Ba/})
+
+// querying specific ranges
+db.users.find({'addresses.zip': {'$gt': 10019, '$lt': 10040}})

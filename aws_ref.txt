@@ -1,0 +1,33 @@
+// Murphy's Law: Anything that can go wrong will go wrong
+
+// Amazon web Services (AWS) is a platform of web services for computing, storage, and networking that work well together.
+
+// Reason to use AWS: the infrastucture should be highly available, which is defined as an uptime 99.99%.
+
+// Elastic Load Balancer(ELB) - The load balancer distributes traffic to a bunch of virtual machines, and is highly available by default.
+// Elastic Compute Cloud(EC2) - The EC2 provides virtual machines.
+// Relational Database service(RDS) - AWS provides relational databases with RDS.
+// Elastic File System(EFS) - EFS provides a scalable, highly available, and durable network filesystem using the NFSv4.1 protocol.
+
+// AWS CloudFormation - Infrastucture as code
+
+// EC2 launching an instance:
+In AWS, the OS comes bundled with preinstalled software for your virtual machine; this bundle is called an Amazon Machine Image(AMI).
+HVM - Hardware Virtualization Technology indicates the latest virtualization technology using hardware extensions for faster access of resources.
+t2.micro - t means the family, 2 means generation 2, micro indicating the instance is small.
+
+1. Open the AWS Management Console, and choose the EC2 service.
+2. Start the wizard to launch a new virtual machine by clicking Launch Instance.
+3. Select Ubuntu Server 16.04 LTS (HVM) as the AMI for your virtual machine.
+4. Choose the instance type t2.micro.
+5. Click Review and Launch to start the virtual machine.
+6. Click Edit Security Groups to configure the firewall. Choose Select an Existing
+  Security Group and select the security group named ssh-only.
+7. Click Review and Launch to start the virtual machine.
+8. Check the summary for the new virtual machine, and click Launch.
+9. Choose the option Choose an Existing Key Pair, select the key pair mykey, and
+   click Launch Instances.
+10. Switch to the overview of EC2 instances, and wait for the new virtual machine’s
+    state to switch to Running.
+
+// The diff. betweeen stopping and terminating a virtual machine is, you can start a stopped virtual machine and can't a terminated machine.

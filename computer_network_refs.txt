@@ -1,0 +1,8 @@
+RFC - An RFC or Request For Comments is a document that contains proposals for new protocols or systems.
+IETF - Internet Engineering Task Force works on standardization of protocols and systems.
+Protocol - To communicate with each other effectively on the network.
+TCP(Transmission Control Protocol) - Allows end systems to communicate effectively.
+UDP(User Datagram Protocol) - Also a communication protocol but does not ensure that data reaches the destination and that it remains incorrupt.
+HTTP(HyperText Transfer Protocol) - defines the format of messages to be exchanged between web clients, e.g., web browsers and web servers.
+Packets - smaller units of bits of data that trasfers between computers on a network.
+Addressing - An address identifies a sending entity and a receiving entity.
